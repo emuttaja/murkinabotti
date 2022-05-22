@@ -73,7 +73,7 @@ def murkina_poll(context: CallbackContext):
 def github(update: Update, context: CallbackContext):
     """Reply with the github repository of this project"""
     update.message.reply_text(
-        "Here you go uwu: https://github.com/emuttaja/murkina-botti"
+        "Here you go uwu: https://github.com/emuttaja/murkinabotti"
     )
 
 
