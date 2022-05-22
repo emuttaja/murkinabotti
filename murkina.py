@@ -78,7 +78,10 @@ def github(update: Update, context: CallbackContext):
 
 
 def main():
-    updater = Updater("5149497263:AAFb9V2HlSIyDrM7A2u3r6YIWNLox_y1QVQ")
+    # load up the api key
+    file = open("api_key.txt", "r")
+    api_key = file.readline()
+    updater = Updater(api_key)
     dispatcher = updater.dispatcher
 
     # add handlers to updater
