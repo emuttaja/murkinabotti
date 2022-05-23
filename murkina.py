@@ -63,7 +63,7 @@ def murkina_poll(context: CallbackContext):
     """Send thö murkina poll"""
     # print("Toimis ny")
     context.bot.send_poll(
-        "1962469908",
+        "-1001403306654",
         "Mihin aikaan murkinaa?",
         TIMES,
         is_anonymous=False,
