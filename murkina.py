@@ -33,7 +33,7 @@ TIMES = [
     "10.00",
     "10.30",
     "11.00",
-    "11.30",
+    "nii",
     "12.00",
     "12.30",
     "Pidä tunkkis"
@@ -81,6 +81,7 @@ def main():
     # load up the api key
     file = open("api_key.txt", "r")
     api_key = file.readline()
+    file.close()
     updater = Updater(api_key)
     dispatcher = updater.dispatcher
 
