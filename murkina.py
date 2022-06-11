@@ -5,7 +5,7 @@ Will have extra functionality some day.
 
 Elias Ahokas
 """
-import logging, time, datetime, pytz
+import logging, time, datetime, pytz, requests
 
 from telegram import (
     Poll,
@@ -76,6 +76,22 @@ def github(update: Update, context: CallbackContext):
         "Here you go uwu: https://github.com/emuttaja/murkinabotti"
     )
 
+def send_cat(update: Update, context:CallbackContext):
+    """ Gets an ai generated picture of a cat from 
+    https://thiscatdoesnotexist.com/ and sends it as a reply"""
+
+    #download the cat
+    url = "https://thiscatdoesnotexist.com/"
+    img_data = requests.get(url).content
+    with open("cat.jpeg", "wb") as handler:
+        handler.write(img_data)
+
+    #send the cat
+    photo = open("cat.jpeg", "rb")
+    context.bot.send_photo(chat_id=update.effective_chat.id, 
+                      photo=photo)
+    photo.close()
+
 
 def main():
     # load up the api key
@@ -88,6 +104,7 @@ def main():
     # add handlers to updater
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("github", github))
+    dispatcher.add_handler(CommandHandler("katti", send_cat))
     
     # start the job that starts the poll daily but only on weekdays
     job = updater.job_queue
