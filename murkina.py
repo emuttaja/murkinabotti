@@ -132,7 +132,8 @@ def lunch_list(update: Updater, context:CallbackContext):
     """
     lunch_list = lunch.get_lists()
     restaurants = lunch_list.keys()
-
+    
+    # format message
     final_message = ""
     for restaurant in restaurants:
         neat_list = ""
