@@ -71,4 +71,4 @@ def get_lists():
     dict
         dictionary of restaurant menus
     """
-    return {reaktori: reaktori(), newton: newton()}
+    return {"reaktori" : reaktori(), "newton" : newton()}

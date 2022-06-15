@@ -22,6 +22,8 @@ from telegram.ext import (
     CallbackContext,
 )
 
+import lunch_fetcher as lunch
+
 # define polling time
 FIN = pytz.timezone("Europe/Helsinki")
 POLLING_TIME = datetime.time(hour=8, minute=0, tzinfo=FIN)
@@ -118,6 +120,31 @@ def send_cat(update: Update, context:CallbackContext):
                       photo=photo)
     photo.close()
 
+def lunch_list(update: Updater, context:CallbackContext):
+    """ Makes a message which has todays lunch list.
+
+    Parameters
+    ----------
+    update : Updater
+        bot updater
+    context : CallbackContext
+        bot context
+    """
+    lunch_list = lunch.get_lists()
+    restaurants = lunch_list.keys()
+
+    final_message = ""
+    for restaurant in restaurants:
+        neat_list = ""
+        for ingredient in lunch_list[restaurant]:
+            neat_list += ingredient + "\n"
+        message = f"{restaurant}: \n {neat_list} \n"
+
+        final_message += message
+        
+    update.message.reply_text(
+        final_message
+    )
 
 def main():
     # load up the api key
@@ -131,6 +158,7 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("github", github))
     dispatcher.add_handler(CommandHandler("katti", send_cat))
+    dispatcher.add_handler(CommandHandler("murkina", lunch_list))
     
     # start the job that starts the poll daily but only on weekdays
     job = updater.job_queue

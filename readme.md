@@ -12,3 +12,4 @@ Remember to add api_key.txt to root dir.
 - /start - Start message. 
 - /katti - Get an ai generated picture from thiscatdoesnotexist.com.
 - /github - Gives a link to the github respository where this project lives.
+- /murkina - Get lunch list as a message.
