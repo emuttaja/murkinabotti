@@ -5,14 +5,13 @@ Will have extra functionality some day.
 
 Elias Ahokas
 """
+
 import logging, time, datetime, pytz, requests
 
 from telegram import (
     Poll,
     Update,
 )
-
-# from telegram.constants import ParseMode
 
 from telegram.ext import (
     Updater,
@@ -30,13 +29,14 @@ POLLING_TIME = datetime.time(hour=8, minute=0, tzinfo=FIN)
 
 # define answers for the poll.
 TIMES = [
-    "10.00",
     "10.30",
     "11.00",
-    "nii",
+    "11.30",
     "12.00",
-    "12.30",
-    "Pidä tunkkis"
+    "13.00",
+    "13.30",
+    "14.00",
+    "En tuu"
 ]
 
 # enable logging
@@ -51,8 +51,16 @@ schedule_logger.setLevel(level=logging.DEBUG)
 # Define some command handlers
 
 def start(update: Update, context: CallbackContext):
-    """Message something random when a user interacts with the bot for the
-    first time to confuse them"""
+    """Send a start message when either user starts a conversation or /start
+    command is used
+
+    Parameters
+    ----------
+    update : Update
+        Updater for tg bot
+    context : CallbackContext
+        Command context
+    """
     update.message.reply_text(
         "Hewwo :3 Mainly for use in the Tivoli -tg group.. @elijjjas is my creator. Message him if you want something"
     )
@@ -60,8 +68,13 @@ def start(update: Update, context: CallbackContext):
 
 
 def murkina_poll(context: CallbackContext):
-    """Send thö murkina poll"""
-    # print("Toimis ny")
+    """Sends a poll to a group when called
+
+    Parameters
+    ----------
+    context : CallbackContext
+        Context for the bot
+    """
     context.bot.send_poll(
         "-1001403306654",
         "Mihin aikaan murkinaa?",
@@ -71,15 +84,28 @@ def murkina_poll(context: CallbackContext):
     )
 
 def github(update: Update, context: CallbackContext):
-    """Reply with the github repository of this project"""
+    """Return a link to the github repository of this project when 
+    /github command is given
+
+    Args:
+        update (Update): updater for tg bot
+        context (CallbackContext): The callback context
+    """
     update.message.reply_text(
         "Here you go uwu: https://github.com/emuttaja/murkinabotti"
     )
 
 def send_cat(update: Update, context:CallbackContext):
-    """ Gets an ai generated picture of a cat from 
-    https://thiscatdoesnotexist.com/ and sends it as a reply"""
+    """Gets an ai generated picture of a cat from 
+    https://thiscatdoesnotexist.com/ and sends it as a reply
 
+    Parameters
+    ----------
+    update : Update
+        Updater
+    context : CallbackContext
+        Context
+    """
     #download the cat
     url = "https://thiscatdoesnotexist.com/"
     img_data = requests.get(url).content
