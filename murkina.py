@@ -20,6 +20,7 @@ from telegram.ext import (
     MessageHandler,
     Filters,
     CallbackContext,
+    MessageFilter
 )
 
 import lunch_fetcher as lunch
@@ -50,7 +51,70 @@ schedule_logger = logging.getLogger("schedule")
 schedule_logger.setLevel(level=logging.DEBUG)
 
 
-# Define some command handlers
+
+# define filters
+
+class AutoCorrectFilter(MessageFilter):
+    def wrong_letter_count(self, word, correct_word, case_sensitive=False):
+        """counts how many of the letters are incorrect in 'word' compared to
+        'correct_word'. Can be case sensitive
+
+        Parameters
+        ----------
+        word : str
+            word to be compared
+        correct_word : str
+            the correct word
+        case_sensitive : bool, optional
+            The function can be case sensitive but, by default False
+
+        Returns
+        -------
+        int
+            how many of the letters were wrong. -1 if word and correct_word are
+            not the same length
+        """
+        if len(word) != len(correct_word):
+            return -1
+
+        wrong_letters = 0
+        for i in range(len(word)):
+            letter = word[i]
+            correct_letter = correct_word[i]
+            if letter != correct_letter:
+                if case_sensitive:
+                    wrong_letters += 1
+                    continue
+                elif letter.swapcase() != correct_letter:
+                    wrong_letters += 1    
+        return wrong_letters
+
+    def filter(self, message):
+        """The main method the bot calls. If the message is 3 letters long and
+        has one letter wrong, returns True..
+
+        Parameters
+        ----------
+        message : str, 
+            message text
+
+        Returns
+        -------
+        bool
+            True if filtering passes, otherwise False
+        """
+        message_string = str(message.text)
+        if not len(message_string) == 3:
+            return False
+
+        wrong_letter_count = self.wrong_letter_count(message_string, "äsh")        
+        if wrong_letter_count == 1:
+            return True
+
+
+
+
+# Define command handlers
 
 def start(update: Update, context: CallbackContext):
     """Send a start message when either user starts a conversation or /start
@@ -66,8 +130,6 @@ def start(update: Update, context: CallbackContext):
     update.message.reply_text(
         "Hewwo :3 Mainly for use in the Tivoli -tg group.. @elijjjas is my creator. Message him if you want something"
     )
-
-
 
 def murkina_poll(context: CallbackContext):
     """Sends a poll to a group when called
@@ -147,19 +209,34 @@ def lunch_list(update: Updater, context:CallbackContext):
         final_message
     )
 
+def autocorrect_message(update: Updater, context: CallbackContext):
+    update.message.reply_text(
+        "Äsh*"
+    )
+
+
+
+
+
 def main():
+    # init a filter class
+    autocorrect_filter = AutoCorrectFilter()
+
     # load up the api key
     file = open("api_key.txt", "r")
     api_key = file.readline()
     file.close()
+
     updater = Updater(api_key)
     dispatcher = updater.dispatcher
 
-    # add handlers to updater
+    # add handlers
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("github", github))
     dispatcher.add_handler(CommandHandler("katti", send_cat))
     dispatcher.add_handler(CommandHandler("murkina", lunch_list))
+
+    dispatcher.add_handler(MessageHandler(autocorrect_filter, autocorrect_message))
     
     # start the job that starts the poll daily but only on weekdays
     job = updater.job_queue

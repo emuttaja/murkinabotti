@@ -59,6 +59,11 @@ def newton():
             components = []
             for item in items:
                 components.append(item["name"])
+            
+            if len(day["mealoptions"]) == 2:
+                items = items = day["mealoptions"][1]["menuItems"]
+                for item in items:
+                    components.append(item["name"])
 
     return components
 
