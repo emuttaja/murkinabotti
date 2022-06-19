@@ -3,7 +3,6 @@
 """ A bot that will ask a telegram group at what time the eating should happen.
 Will have extra functionality some day.
 
-Elias Ahokas
 """
 
 import logging, time, datetime, pytz, requests
