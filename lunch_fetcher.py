@@ -1,6 +1,7 @@
 import json
 import requests
 import datetime
+import random
 
 HERZI = "https://www.sodexo.fi/ruokalistat/output/weekly_json/111"
 REAKTORI = "https://www.foodandco.fi/modules/json/json/Index?costNumber=0812&language=fi"
@@ -32,7 +33,13 @@ def reaktori():
     menus = lunch_json["MenusForDays"]
     for day in menus:
         if day["Date"][0:10] == today:
-            return day["SetMenus"][2]["Components"]
+            try:
+             return day["SetMenus"][2]["Components"]
+            except IndexError:
+                # default to saying someone ate the food if the restaurant has no food
+                victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot"]
+                components = [f"{random.choice(victims)} söi kaiken :("]
+                return components
 
 
 def newton():
@@ -50,6 +57,10 @@ def newton():
     # open json file
     response = requests.get(NEWTON)
     lunch_json = json.loads(response.text)
+    
+    # default to saying someone ate the food if the restaurant has no food
+    victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot"]
+    components = [f"{random.choice(victims)} söi kaiken :("]
 
     # navigate the json
     days = lunch_json[0]["menuTypes"][0]["menus"][0]["days"]
