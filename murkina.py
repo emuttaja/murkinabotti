@@ -201,7 +201,7 @@ def lunch_list(update: Updater, context:CallbackContext):
         neat_list = ""
         for ingredient in lunch_list[restaurant]:
             neat_list += ingredient + "\n"
-        message = f"{restaurant}: \n {neat_list} \n"
+        message = f"{restaurant}: \n{neat_list} \n"
 
         final_message += message
         
