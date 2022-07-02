@@ -127,9 +127,19 @@ def start(update: Update, context: CallbackContext):
     context : CallbackContext
         Command context
     """
+
     update.message.reply_text(
-        "Hewwo :3 Mainly for use in the Tivoli -tg group.. @elijjjas is my creator. Message him if you want something"
+        "H-hewwo :3c"
     )
+
+    update.message.reply_text(
+        "Im mainly used in the Tivoli tg group.. @elijjjas is my creator. Message him if you need something."
+    )
+
+    update.message.reply_text(
+        "To see all the things I support, please visit https://github.com/emuttaja/murkinabotti"
+    )
+
 
 def murkina_poll(context: CallbackContext):
     """Sends a poll to a group when called
