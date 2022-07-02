@@ -1,6 +1,6 @@
 # MurkinaBot
 
-A bot for automatically creating a poll that asks at what time the group should go to eat.
+A bot for automatically creating a poll that asks at what time the group should go to eat. Will also correct you if you spell certain words wrong.
 
 Uses the python-telegram-bot module as the telegram api wrapper.
 
