@@ -55,8 +55,8 @@ schedule_logger.setLevel(level=logging.DEBUG)
 
 class AutoCorrectFilter(MessageFilter):
     def wrong_letter_count(self, word, correct_word, case_sensitive=False):
-        """counts how many of the letters are incorrect in 'word' compared to
-        'correct_word'. Can be case sensitive
+        """counts how many of the letters are incorrect in arg 'word' compared to
+        arg 'correct_word'. Can be case sensitive
 
         Parameters
         ----------
@@ -105,7 +105,8 @@ class AutoCorrectFilter(MessageFilter):
         message_string = str(message.text)
         if not len(message_string) == 3:
             return False
-
+        if message_string == "äsu" or message_string == "Äsu":
+            return False
         wrong_letter_count = self.wrong_letter_count(message_string, "äsh")        
         if wrong_letter_count == 1:
             return True
