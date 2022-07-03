@@ -10,6 +10,8 @@ import logging, time, datetime, pytz, requests
 from telegram import (
     Poll,
     Update,
+    constants,
+    ParseMode
 )
 
 from telegram.ext import (
@@ -211,12 +213,13 @@ def lunch_list(update: Updater, context:CallbackContext):
         neat_list = ""
         for ingredient in lunch_list[restaurant]:
             neat_list += ingredient + "\n"
-        message = f"{restaurant}: \n{neat_list} \n"
+        message = f"<b>{restaurant}:</b>\n{neat_list}\n"
 
         final_message += message
         
     update.message.reply_text(
-        final_message
+        final_message, 
+        parse_mode = ParseMode.HTML
     )
 
 def autocorrect_message(update: Updater, context: CallbackContext):

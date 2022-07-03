@@ -37,7 +37,7 @@ def reaktori():
              return day["SetMenus"][2]["Components"]
             except IndexError:
                 # default to saying someone ate the food if the restaurant has no food
-                victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot"]
+                victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot", "Elias"]
                 components = [f"{random.choice(victims)} söi kaiken :("]
                 return components
 
@@ -59,7 +59,7 @@ def newton():
     lunch_json = json.loads(response.text)
     
     # default to saying someone ate the food if the restaurant has no food
-    victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot"]
+    victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot", "Elias"]
     components = [f"{random.choice(victims)} söi kaiken :("]
 
     # navigate the json
