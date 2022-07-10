@@ -63,7 +63,11 @@ def newton():
     components = [f"{random.choice(victims)} söi kaiken :("]
 
     # navigate the json
-    days = lunch_json[0]["menuTypes"][0]["menus"][0]["days"]
+    try:
+        days = lunch_json[0]["menuTypes"][0]["menus"][0]["days"]
+    except IndexError:
+        return components
+        
     for day in days:
         if str(day["date"]) == today:
             items = day["mealoptions"][0]["menuItems"]
