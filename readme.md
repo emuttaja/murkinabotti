@@ -6,7 +6,7 @@ Uses the python-telegram-bot module as the telegram api wrapper.
 
 Remember to add api_key.txt to root dir or else the bot wont run.
 
----
+(Telegram)[https://t.me/murkinointibot]
 
 ### Current commands include:
 - /start    -  Start message. 
