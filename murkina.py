@@ -227,6 +227,25 @@ def autocorrect_message(update: Updater, context: CallbackContext):
         "Äsh*"
     )
 
+def wabu(update: Updater, context: CallbackContext):
+    """Reply the time to wappu
+
+    Parameters
+    ----------
+    update : Updater
+        updater
+    context : CallbackContext
+        context
+    """
+    now = datetime.datetime.now(tz=FIN)
+    wabu = datetime.datetime(2023, 5, 1, 0, 0, tzinfo=FIN)
+    time_to_wabu = wabu - now
+    
+    message = (f"Wabuun on {time_to_wabu.days} päivää "
+               f"eli {time_to_wabu.seconds} sekuntia")
+    update.message.reply_text(
+        message
+    )
 
 
 
@@ -248,6 +267,7 @@ def main():
     dispatcher.add_handler(CommandHandler("github", github))
     dispatcher.add_handler(CommandHandler("katti", send_cat))
     dispatcher.add_handler(CommandHandler("murkina", lunch_list))
+    dispatcher.add_handler(CommandHandler("wabu", wabu))
 
     dispatcher.add_handler(MessageHandler(autocorrect_filter, autocorrect_message))
     
