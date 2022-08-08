@@ -239,26 +239,26 @@ def wabu(update: Updater, context: CallbackContext):
     """
     now = datetime.datetime.now(tz=FIN)
     wabu = datetime.datetime(2023, 5, 1, 0, 0, tzinfo=FIN)
-    time_to_wabu = wabu - now
+    time_to_wabu = wabu - now - datetime.timedelta(seconds=87600) # -1h20min for some reason -,-
 
     days, hours, minutes = time_to_wabu.days, time_to_wabu.seconds // 3600, time_to_wabu.seconds // 60 % 60
     seconds = time_to_wabu.seconds - hours*3600 - minutes*60
 
     message = (f"Wabuun on {days} päivää, "
-               f"{hours - 1} tuntia, "         # -1h20min for some reason -,-
-               f"{minutes - 20} minuuttia ja "
+               f"{hours} tuntia, "         
+               f"{minutes} minuuttia ja "
                f"{seconds} sekuntia.")
     update.message.reply_text(
         message
     )
 
 def wabuu(update: Updater, context: CallbackContext):
-    photo = open("wabuu", "rb")
+    photo = open("wabuu.jpg", "rb")
     context.bot.send_photo(chat_id=update.effective_chat.id, 
                       photo=photo)
     photo.close()
 
-def commands(update: Updater, context, CallbackContext):
+def commands(update: Updater, context: CallbackContext):
     message = (
         "Tuen seuraavia komentoja:\n"
         "/katti\n/murkina\n/wabu\n/github"
@@ -288,6 +288,7 @@ def main():
     dispatcher.add_handler(CommandHandler("murkina", lunch_list))
     dispatcher.add_handler(CommandHandler("wabu", wabu))
     dispatcher.add_handler(CommandHandler("1337", commands))
+    dispatcher.add_handler(CommandHandler("wabuu", wabuu))
 
     dispatcher.add_handler(MessageHandler(autocorrect_filter, autocorrect_message))
     
