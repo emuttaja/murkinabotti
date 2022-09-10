@@ -11,7 +11,7 @@ RESTAURANTS = [HERZI, REAKTORI, NEWTON]
 
 
 def is_today_finnish_weekday(weekday):
-    weekdays = "Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai"
+    weekdays = ["Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Lauantai", "Sunnuntai"]
     weekday_today = datetime.datetime.today().weekday()
 
     if weekday == weekdays[weekday_today]:
