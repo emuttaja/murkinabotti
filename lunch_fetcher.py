@@ -38,11 +38,31 @@ def reaktori():
     lunch_json = json.loads(response.text)
     
     # navigate the json
+    components = []
     menus = lunch_json["MenusForDays"]
     for day in menus:
         if day["Date"][0:10] == today:
             try:
-             return day["SetMenus"][2]["Components"]
+                for option in day["SetMenus"]:
+                    if option["Name"] == "Lounas":
+                        if option["Components"] == []:
+                            continue
+                        else:
+                            for component in option["Components"]:
+                                flag = True
+                                i = 0
+                                while flag:
+                                    if component[i] == "(":
+                                        flag = False
+                                    elif i == len(component):
+                                        flag = False
+                                    i = i + 1
+                                components.append(component[:i - 1])
+                
+                print(components)
+                return components
+
+                # return day["SetMenus"][2]["Components"]
             except IndexError:
                 # default to saying someone ate the food if the restaurant has no food
                 victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot", "Elias"]
@@ -89,9 +109,9 @@ def newton():
                 for item in items:
                     components.append(item["name"])
     
-    print(components)
     return components
 
+""" Currently not open :(
 def soos():
     # get current date
     now = datetime.datetime.now()
@@ -125,6 +145,7 @@ def soos():
 
     return components
 
+"""
 def hertsi():
      # get current date
     now = datetime.datetime.now()
@@ -159,4 +180,4 @@ def get_lists():
     dict
         dictionary of restaurant menus
     """
-    return {"Reaktori" : reaktori(), "Newton" : newton(), "Såås bar" : soos(), "Hertsi" : hertsi()}
+    return {"Reaktori" : reaktori(), "Newton" : newton(),  "Hertsi" : hertsi()}
