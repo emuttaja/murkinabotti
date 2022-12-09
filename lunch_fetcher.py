@@ -4,8 +4,11 @@ import datetime
 import random
 
 HERZI = "https://www.sodexo.fi/ruokalistat/output/weekly_json/111"
-REAKTORI = "https://www.foodandco.fi/modules/json/json/Index?costNumber=0812&language=fi"
+REAKTORI = "https://www.compass-group.fi/menuapi/feed/json?costNumber=0812&language=fi"
 NEWTON = "https://fi.jamix.cloud/apps/menuservice/rest/haku/menu/93077/6?lang=fi"
+
+VICTIMS = ["Eemeli", "Nokia", "Otso", "Joonas", "Lauri", "Elias",
+           "Aleksi", "Pekka", "Lauri", "Murinabot"]
 
 RESTAURANTS = [HERZI, REAKTORI, NEWTON]
 
@@ -65,8 +68,7 @@ def reaktori():
                 # return day["SetMenus"][2]["Components"]
             except IndexError:
                 # default to saying someone ate the food if the restaurant has no food
-                victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot", "Elias"]
-                components = [f"{random.choice(victims)} söi kaiken :("]
+                components = [f"{random.choice(VICTIMS)} söi kaiken :("]
                 return components
 
 
@@ -87,8 +89,7 @@ def newton():
     lunch_json = json.loads(response.text)
     
     # default to saying someone ate the food if the restaurant has no food
-    victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot", "Elias"]
-    components = [f"{random.choice(victims)} söi kaiken :("]
+    components = [f"{random.choice(VICTIMS)} söi kaiken :("]
 
     # navigate the json
     try:
@@ -111,7 +112,7 @@ def newton():
     
     return components
 
-""" Currently not open :(
+
 def soos():
     # get current date
     now = datetime.datetime.now()
@@ -122,12 +123,11 @@ def soos():
     lunch_json = json.loads(response.text)
 
     # default to saying someone ate the food if the restaurant has no food
-    victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot", "Elias"]
-    components = [f"{random.choice(victims)} söi kaiken :("]
+    components = [f"{random.choice(VICTIMS)} söi kaiken :("]
 
     # navigate the json
     try:
-        days = lunch_json[0]["menuTypes"][1]["menus"][0]["days"]
+        days = lunch_json[0]["menuTypes"][4]["menus"][0]["days"]
     except IndexError:
         return components
 
@@ -139,13 +139,80 @@ def soos():
                 name = menu["name"]
                 if name == "SÅÅS BAR":
                     components = []
-                    for item in menu["MenuItems"]:
+                    for item in menu["menuItems"]:
                         components.append(item["name"])
                     break
 
     return components
 
-"""
+
+def fusion_meal():
+    # get current date
+    now = datetime.datetime.now()
+    today = now.strftime("%Y%m%d")
+
+    # open json file
+    response = requests.get(NEWTON)
+    lunch_json = json.loads(response.text)
+
+    # default to saying someone ate the food if the restaurant has no food
+    components = [f"{random.choice(VICTIMS)} söi kaiken :("]
+
+    # navigate the json
+    try:
+        days = lunch_json[0]["menuTypes"][4]["menus"][0]["days"]
+    except IndexError:
+        return components
+
+  
+    for day in days:
+        if str(day["date"]) == today:
+
+            for menu in day["mealoptions"]:
+                name = menu["name"]
+                if name == "FUSION MEAL":
+                    components = []
+                    for item in menu["menuItems"]:
+                        components.append(item["name"])
+                    break
+
+    return components
+
+def fusion_burger():
+    # get current date
+    now = datetime.datetime.now()
+    today = now.strftime("%Y%m%d")
+
+    # open json file
+    response = requests.get(NEWTON)
+    lunch_json = json.loads(response.text)
+
+    # default to saying someone ate the food if the restaurant has no food
+    components = [f"{random.choice(VICTIMS)} söi kaiken :("]
+
+    # navigate the json
+    try:
+        days = lunch_json[0]["menuTypes"][4]["menus"][0]["days"]
+    except IndexError:
+        return components
+
+  
+    for day in days:
+        if str(day["date"]) == today:
+            print("wtf - day found")
+            print(day["mealoptions"])
+            for menu in day["mealoptions"]:
+                name = menu["name"]
+                print(name)
+                if name == "FUSION BURGER":
+                    components = []
+                    for item in menu["menuItems"]:
+                        components.append(item["name"])
+                    break
+
+    return components
+
+
 def hertsi():
      # get current date
     now = datetime.datetime.now()
@@ -156,8 +223,7 @@ def hertsi():
     lunch_json = json.loads(response.text)
 
     # default to saying someone ate the food if the restaurant has no food
-    victims = ["Otso", "Eemeli", "Nokia", "Joonas", "Murinabot", "Elias"]
-    components = [f"{random.choice(victims)} söi kaiken :("]
+    components = [f"{random.choice(VICTIMS)} söi kaiken :("]
 
     # navigate json
     for day in lunch_json["mealdates"]:
@@ -165,12 +231,42 @@ def hertsi():
             components = []
             courses = day["courses"]
             for course in courses:
-                # I have no idea why the fuck I need to do this but here we are
                 course1 = courses[course]
                 components.append(course1["title_fi"])
     
     return components
 
+
+def fusion():
+    # get current date
+    now = datetime.datetime.now()
+    today = now.strftime("%Y%m%d")
+
+    # open json file
+    response = requests.get(NEWTON)
+    lunch_json = json.loads(response.text)
+
+    # default to saying someone ate the food if the restaurant has no food
+    components = [f"{random.choice(VICTIMS)} söi kaiken :("]
+
+    # navigate the json
+    try:
+        days = lunch_json[0]["menuTypes"][4]["menus"][0]["days"]
+    except IndexError:
+        return components
+
+  
+    for day in days:
+        if str(day["date"]) == today:
+            for menu in day["mealoptions"]:
+                name = menu["name"]
+                if name == "FUSION":
+                    components = []
+                    for item in menu["menuItems"]:
+                        components.append(item["name"])
+                    break
+
+    return components
 
 def get_lists():
     """Returns a dictionary of restaurants food lists
@@ -180,4 +276,19 @@ def get_lists():
     dict
         dictionary of restaurant menus
     """
-    return {"Reaktori" : reaktori(), "Newton" : newton(),  "Hertsi" : hertsi()}
+    if (is_today_finnish_weekday("Perjantai")):
+        return {
+            "Newton" : newton(),  
+            "Hertsi" : hertsi(),
+            "Siipeä": fusion(),
+            "Reaktori" : reaktori(), 
+        }
+
+    return {
+            "Newton" : newton(),  
+            "Hertsi" : hertsi(),
+            "Fusion Meal": fusion_meal(),
+            "Reaktori" : reaktori(), 
+            "Fusion Burger" : fusion_burger(),
+            "Såås bar" : soos(),
+            }
