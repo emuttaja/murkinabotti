@@ -93,8 +93,7 @@ class AutoCorrectFilter(MessageFilter):
         return wrong_letters
 
     def filter(self, message):
-        """The main method the bot calls. If the message is 3 letters long and
-        has one letter wrong, returns True..
+        """The main method the bot calls.
 
         Parameters
         ----------
@@ -106,7 +105,11 @@ class AutoCorrectFilter(MessageFilter):
         bool
             True if filtering passes, otherwise False
         """
+
+        
         message_string = str(message.text)
+        # bad handling of "äsh"
+
         if not len(message_string) == 3:
             return False
         if message_string == "äsu" or message_string == "Äsu":
@@ -114,6 +117,15 @@ class AutoCorrectFilter(MessageFilter):
         wrong_letter_count = self.wrong_letter_count(message_string, "äsh")        
         if wrong_letter_count == 1:
             return True
+
+
+class eemeliFilter(MessageFilter):
+    def filter(self, message):
+        message_string = str(message.text)
+
+        if message_string == "Oho!":
+            return True
+
 
 
 
@@ -269,11 +281,17 @@ def commands(update: Updater, context: CallbackContext):
         message
     )
 
+def sano_eemeli(update: Updater, context: CallbackContext):
+    update.message.reply_text(
+        "sano Eemeli"
+    )
+
 
 
 def main():
     # init a filter class
     autocorrect_filter = AutoCorrectFilter()
+    eemeli_filter = eemeliFilter()
 
     # load up the api key
     file = open("api_key.txt", "r")
@@ -293,6 +311,7 @@ def main():
     dispatcher.add_handler(CommandHandler("wabuu", wabuu))
 
     dispatcher.add_handler(MessageHandler(autocorrect_filter, autocorrect_message))
+    dispatcher.add_handler(MessageHandler(eemeli_filter, sano_eemeli))
     
     # start the job that starts the poll daily but only on weekdays
     job = updater.job_queue
