@@ -196,17 +196,13 @@ def send_cat(update: Update, context:CallbackContext):
     context : CallbackContext
         Context
     """
+
     #download the cat
     url = "https://thiscatdoesnotexist.com/"
     img_data = requests.get(url).content
-    with open("cat.jpeg", "wb") as handler:
-        handler.write(img_data)
 
     #send the cat
-    photo = open("cat.jpeg", "rb")
-    context.bot.send_photo(chat_id=update.effective_chat.id, 
-                      photo=photo)
-    photo.close()
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo=img_data)
 
 def lunch_list(update: Updater, context:CallbackContext):
     """ Makes a message which has todays lunch list.
