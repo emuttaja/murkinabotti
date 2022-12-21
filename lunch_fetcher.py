@@ -93,21 +93,17 @@ def newton():
 
     # navigate the json
     try:
-        days = lunch_json[0]["menuTypes"][2]["menus"][0]["days"]
+        days = lunch_json[0]["menuTypes"][1]["menus"][0]["days"]
     except IndexError:
         return components
 
     components = []    
     for day in days:
         if str(day["date"]) == today:
-            items = day["mealoptions"][0]["menuItems"]
+            #items = day["mealoptions"][0]["menuItems"]
 
-            for item in items:
-                components.append(item["name"])
-            
-            if len(day["mealoptions"]) == 2:
-                items = items = day["mealoptions"][1]["menuItems"]
-                for item in items:
+            for meal_option in day["mealoptions"]:
+                for item in meal_option["menuItems"]:
                     components.append(item["name"])
     
     return components
